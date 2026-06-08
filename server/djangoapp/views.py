@@ -117,8 +117,9 @@ def get_dealerships(request, state="All"):
 
 
 # Create a `get_dealer_reviews` view to render the reviews of a dealer
+
 def get_dealer_reviews(request, dealer_id):
-    if(dealer_id):
+    if dealer_id:
         endpoint = "/fetchReviews/dealer/" + str(dealer_id)
 
         reviews = get_request(endpoint)
@@ -130,7 +131,10 @@ def get_dealer_reviews(request, dealer_id):
 
             print(response)
 
-            review_detail['sentiment'] = response['sentiment']
+            if response and 'sentiment' in response:
+                review_detail['sentiment'] = response['sentiment']
+            else:
+                review_detail['sentiment'] = "neutral"
 
         return JsonResponse({
             "status": 200,
